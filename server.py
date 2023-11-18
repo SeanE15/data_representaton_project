@@ -1,11 +1,12 @@
 from flask import Flask, url_for, request, redirect, abort, jsonify
+from partDAO import partDAO
 
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
 part=[
-    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52, "Associated_Vehicle": "VW Golf", "Availability": "12"},
-    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60, "Associated Vehicle": "VW Golf", "Availability": "1"},
-    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86, "Associated Vehicle": "VW Golf", "Availability": "100"}
+    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52, "Assoc_Vehicle": "VW Golf", "Availability": "12"},
+    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60, "Assoc_Vehicle": "VW Golf", "Availability": "1"},
+    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86, "Assoc_Vehicle": "VW Golf", "Availability": "100"}
 ]
 nextId=4
 
@@ -15,7 +16,9 @@ def index():
 
 @app.route('/parts')
 def getAll():
-    return jsonify(part)
+    #print("in getall")
+    results = bookDAO.getAll()
+    return jsonify(results)
 
 @app.route('/parts/<int:id>')
 def findById(id):
@@ -35,18 +38,29 @@ def create():
         "Part_Number": request.json["Part_Number"],
         "Part_Name": request.json["Part_Name"],
         "Price": request.json["Price"],
-        "Associated_Vehicle": request.json["Associated_Vehicle"],
+        "Assoc_Vehicle": request.json["Assoc_Vehicle"],
         "Availability": request.json["Availability"]
     }
-    part.append(part)
-    nextId += 1
+    values =(part['id'],part['Part_Number'],part['Part_Name'],part['Price'],part['Assoc_Vehicle'],part['Availability'],)
+    newId = partDAO.create(values)
+    part['id'] = newId
     return jsonify(part)
 
 @app.route('/parts/<int:id>', methods=['PUT'])
 def update(id):
     foundparts = list(filter(lambda t: t["id"] == id, part))
+    if not foundparts:
+        abort(404)
+    
+    if not request.json:
+        abort(400)
+    reqJson = request.json
+
+    if 'price' in reqJson and type(reqJson['price']) is not int:
+        abort(400)
     if len(foundparts) == 0:
         return jsonify({}), 404
+    
     currentPart = foundparts[0]
     if 'Part_Number' in request.json:
         currentPart['Part_Number'] = request.json['Part_Number']
