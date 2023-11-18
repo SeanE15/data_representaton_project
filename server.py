@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect, abort, jsonify
+from flask import Flask, request, abort, jsonify
 from partDAO import partDAO
 
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
@@ -16,8 +16,7 @@ def index():
 
 @app.route('/parts')
 def getAll():
-    #print("in getall")
-    results = bookDAO.getAll()
+    results = partDAO.getAll()
     return jsonify(results)
 
 @app.route('/parts/<int:id>')
