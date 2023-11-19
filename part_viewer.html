@@ -1,0 +1,244 @@
+<html>
+    <head>
+        <title> view parts</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+       
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <h1>Books</h1>
+        <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
+        <div>
+            <table class="table" id="partTable">
+                <tr>
+                        <th>id</th>
+                        <th>Part Name</th>
+                        <th>
+                            Part Number
+                        </th>
+                        <th>Price</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                </tr>
+                
+            </table>
+        </div>
+        <div id='createUpdateForm' style="display: none">
+                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Book</h2>
+                <input type="hidden" name="id"/>
+                Part Name <input type="text" name="part_name" /><br/>
+                Part Number <input type="text" name="part_no"/> <br/>
+                Price <input type="number" name="price"/> <br/>
+                Available Stock <input type="number" name="availability"/> <br/>
+                <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
+                <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
+        </div>
+    </body>
+    <script>
+    function showCreate(){
+        document.getElementById('showCreateButton').style.display="none"
+        document.getElementById('partTable').style.display="none"
+        document.getElementById('createUpdateForm').style.display="block"
+
+        document.getElementById('createLabel').style.display="inline"
+        document.getElementById('updateLabel').style.display="none"
+
+        document.getElementById('doCreateButton').style.display="block"
+        document.getElementById('doUpdateButton').style.display="none"
+
+    }
+    function showViewAll(){
+        document.getElementById('showCreateButton').style.display="block"
+        document.getElementById('partTable').style.display="block"
+        document.getElementById('createUpdateForm').style.display="none"
+    }
+    function showUpdate(buttonElement){
+        document.getElementById('showCreateButton').style.display="none"
+        document.getElementById('partTable').style.display="none"
+        document.getElementById('createUpdateForm').style.display="block"
+
+        document.getElementById('createLabel').style.display="none"
+        document.getElementById('updateLabel').style.display="inline"
+
+        document.getElementById('doCreateButton').style.display="none"
+        document.getElementById('doUpdateButton').style.display="block"
+
+
+        var rowElement = buttonElement.parentNode.parentNode
+        // these is a way of finding the closest <tr> which would safer, closest()
+        
+        var book = getPartFromRow(rowElement)
+        populateFormWithPart(part)
+    }
+    function doCreate(){
+        var form = document.getElementById('createUpdateForm')
+
+        var part = {}
+       
+        part.name = form.querySelector('input[name="part_name"]').value
+        part.number = form.querySelector('input[name="part_number"]').value
+        part.price = form.querySelector('input[name="price"]').value
+  
+        console.log(JSON.stringify(part))
+        createBookAjax(part)
+        
+        
+    }
+    function doUpdate(){
+        var part = getPartFromForm();
+        var rowElement = document.getElementById(part.id);
+        updateBookAjax(part);
+        setBookInRow(rowElement,part);
+       
+        clearForm();
+        showViewAll();
+    }
+    function doDelete(r){
+        var tableElement = document.getElementById('partTable');
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteBookAjax(rowElement.getAttribute("id"));
+        tableElement.deleteRow(index);
+    }
+    function addBookToTable(part){
+        var tableElement = document.getElementById('partTable')
+        var rowElement = tableElement.insertRow(-1)
+        rowElement.setAttribute('id',part.id)
+        var cell1 = rowElement.insertCell(0);
+        cell1.innerHTML = part.id
+        var cell2 = rowElement.insertCell(1);
+        cell2.innerHTML = part.title
+        var cell3 = rowElement.insertCell(2);
+        cell3.innerHTML = part.author
+        var cell4 = rowElement.insertCell(3);
+        cell4.innerHTML = part.price
+        var cell5 = rowElement.insertCell(4);
+        cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+        var cell6 = rowElement.insertCell(5);
+        cell6.innerHTML = '<button onclick=doDelete(this)>delete</button>'
+
+    }
+
+    function clearForm(){
+        var form = document.getElementById('createUpdateForm')
+
+        form.querySelector('input[name="part_name"]').value=''
+        form.querySelector('input[name="part_no"]').value=''
+        form.querySelector('input[name="price"]').value=''
+    }
+    function getPartFromRow(rowElement){
+        var car ={}
+        part.id  = rowElement.getAttribute('id')
+        part.name = rowElement.cells[1].firstChild.textContent
+        part.number = rowElement.cells[2].firstChild.textContent
+        part.price = parseInt(rowElement.cells[3].firstChild.textContent,10)
+        return part
+    }
+    function setPartInRow(rowElement, part){
+        rowElement.cells[0].firstChild.textContent= part.id  
+        rowElement.cells[1].firstChild.textContent= part.name
+        rowElement.cells[2].firstChild.textContent= part.number
+        rowElement.cells[3].firstChild.textContent= part.price
+        rowElement.cells[4].firstChild.textContent= part.availabiliity
+    }
+    function populateFormWithPart(part){
+        var form = document.getElementById('createUpdateForm')
+        form.querySelector('input[name="id"]').disabled = true
+        form.querySelector('input[name="id"]').value  = part.id
+        form.querySelector('input[name="part_name"]').value= part_name
+        form.querySelector('input[name="part_no"]').value= part.no
+        form.querySelector('input[name="price"]').value= part.price
+        return part
+    }
+    function getPartFromForm(){
+        var form = document.getElementById('createUpdateForm')
+        var part = {}
+        part.id = form.querySelector('input[name="id"]').value
+        part.name = form.querySelector('input[name="part_name"]').value
+        part.number = form.querySelector('input[name="part_no"]').value
+        part.price = parseInt(form.querySelector('input[name="price"]').value,10)
+        console.log(JSON.stringify(part))
+        return book
+    }
+    function getAllAjax(){
+        $.ajax({
+            "url": "http://127.0.0.1:5000/parts",
+            "method":"GET",
+            "data":"",
+            "dataType": "JSON",
+            "success":function(result){
+                //console.log(result);
+                for (part of result){
+                    addBookToTable(part);
+                }
+                
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+
+    }
+    function createPartAjax(part){
+        //var car = {"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}
+        console.log(JSON.stringify(part));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/parts",
+            "method":"POST",
+            "data":JSON.stringify(part),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                part.id = result.id
+                addBookToTable(part)
+                clearForm()
+                showViewAll()
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    function updatePartAjax(part){
+        //var car = {"reg":"12 D 1234","price":8000}
+        console.log(JSON.stringify(part));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/parts/"+encodeURI(part.id),
+            "method":"PUT",
+            "data":JSON.stringify(part),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+               // console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    function deletePartAjax(id){
+        
+        //console.log(JSON.stringify('deleting '+id));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/parts/"+encodeURI(id),
+            "method":"DELETE",
+            "data":"",
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    getAllAjax();
+  
+
+    
+    </script>
+</html>

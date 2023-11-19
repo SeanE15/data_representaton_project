@@ -37,10 +37,9 @@ def create():
         "Part_Number": request.json["Part_Number"],
         "Part_Name": request.json["Part_Name"],
         "Price": request.json["Price"],
-        "Assoc_Vehicle": request.json["Assoc_Vehicle"],
-        "Availability": request.json["Availability"]
+        "Vehicle": request.json["Vehicle"],
     }
-    values =(part['id'],part['Part_Number'],part['Part_Name'],part['Price'],part['Assoc_Vehicle'],part['Availability'],)
+    values =(part['id'],part['Part_Number'],part['Part_Name'],part['Price'],part['Vehicle'],)
     newId = partDAO.create(values)
     part['id'] = newId
     return jsonify(part)
@@ -67,14 +66,12 @@ def update(id):
         currentPart['Part_Name'] = request.json['Part_Name']
     if 'Price' in request.json:
         currentPart['Price'] = request.json['Price']
-    if 'Associated_Vehicle' in request.json:
-        currentPart['Associated_Vehicle'] = request.json['Associated_Vehicle']
-    if 'Availability' in request.json:
-        currentPart['Availability'] = request.json['Availability']
+    if 'Vehicle' in request.json:
+        currentPart['Vehicle'] = request.json['Vehicle']
 
     return jsonify(currentPart)
 
-@app.route('/books/<int:id>', methods=['DELETE'])
+@app.route('/parts/<int:id>', methods=['DELETE'])
 def delete(id):
     foundparts = list(filter(lambda t: t["id"] == id, part))
     if len(foundparts) == 0:

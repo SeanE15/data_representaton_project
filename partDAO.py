@@ -1,6 +1,6 @@
 import mysql.connector
 import dbconfig as cfg
-class PartDAO:
+class part_DAO:
     connection=""
     cursor =''
     host=       ''
@@ -30,7 +30,7 @@ class PartDAO:
          
     def create(self, values):
         cursor = self.getcursor()
-        sql="insert into part (id, Part_No, Part_Name, Price, Assoc_Vehicle, Availability) values (%s,%s,%s, %s, %s, %s)"
+        sql="insert into part (id, Part_No, Part_Name, Price, Vehicle) values (%s,%s,%s, %s, %s)"
         cursor.execute(sql, values)
 
         self.connection.commit()
@@ -65,7 +65,7 @@ class PartDAO:
 
     def update(self, values):
         cursor = self.getcursor()
-        sql="update part set Part_No= %s, Part_Name=%s, Price=%s, Assoc_Vehilce=%s, Availability=%s where id = %s"
+        sql="update part set Part_No= %s, Part_Name=%s, Price=%s, Vehicle=%s, where id = %s"
         cursor.execute(sql, values)
         self.connection.commit()
         self.closeAll()
@@ -83,7 +83,7 @@ class PartDAO:
         print("delete completed")
 
     def convertToDictionary(self, result):
-        colnames=['id','Part_No','Part_Name', "Price", "Assoc_Vehilce", "Availability"]
+        colnames=['id','Part_No','Part_Name', "Price", "Vehicle"]
         item = {}
         
         if result:
@@ -93,4 +93,4 @@ class PartDAO:
         
         return item
         
-partDAO = PartDAO()
+partDAO = part_DAO()
