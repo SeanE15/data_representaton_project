@@ -4,10 +4,13 @@ from partDAO import partDAO
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
 part=[
-    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52, "Assoc_Vehicle": "VW Golf", "Availability": "12"},
-    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60, "Assoc_Vehicle": "VW Golf", "Availability": "1"},
-    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86, "Assoc_Vehicle": "VW Golf", "Availability": "100"}
+
+    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52, "Vehicle": "VW Golf"},
+    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60, "Vehicle": "VW Golf"},
+    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86, "Vehicle": "VW Golf"}
+
 ]
+
 nextId=4
 
 @app.route('/')
@@ -16,8 +19,8 @@ def index():
 
 @app.route('/parts')
 def getAll():
-    results = partDAO.getAll()
-    return jsonify(results)
+    #results = partDAO.getAll()
+    return jsonify(part)
 
 @app.route('/parts/<int:id>')
 def findById(id):
@@ -33,12 +36,14 @@ def create():
         abort(400)
     
     part = {
+
         "id": nextId,
         "Part_Number": request.json["Part_Number"],
         "Part_Name": request.json["Part_Name"],
         "Price": request.json["Price"],
         "Vehicle": request.json["Vehicle"],
     }
+
     values =(part['id'],part['Part_Number'],part['Part_Name'],part['Price'],part['Vehicle'],)
     newId = partDAO.create(values)
     part['id'] = newId
