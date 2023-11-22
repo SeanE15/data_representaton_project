@@ -1,5 +1,6 @@
 import mysql.connector
 class vehicle_DAO:
+    
     db=""
     def __init__(self): 
         self.db = mysql.connector.connect(

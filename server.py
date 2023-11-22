@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, jsonify
+from flask import Flask,render_template, request, abort, jsonify
 from partDAO import partDAO
 
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
@@ -15,7 +15,8 @@ nextId=4
 
 @app.route('/')
 def index():
-    return "This is the start of the parts catalogue"
+    return render_template('part_viewer.html')
+    
 
 @app.route('/parts')
 def getAll():

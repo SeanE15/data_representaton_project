@@ -1,6 +1,7 @@
 import mysql.connector
 import dbconfig as cfg
 class part_DAO:
+    
     connection=""
     cursor =''
     host=       ''
@@ -65,7 +66,7 @@ class part_DAO:
 
     def update(self, values):
         cursor = self.getcursor()
-        sql="update part set Part_No= %s, Part_Name=%s, Price=%s, Vehicle=%s, where id = %s"
+        sql="update part set Part_No= %s, Part_Name=%s, Price=%s, Vehicle=%s where id = %s"
         cursor.execute(sql, values)
         self.connection.commit()
         self.closeAll()
