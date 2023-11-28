@@ -1,6 +1,7 @@
 import mysql.connector
+import dbconfig as cfg
 class vehicle_DAO:
-    
+
     db=""
     def __init__(self): 
         self.db = mysql.connector.connect(

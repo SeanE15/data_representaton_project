@@ -1,13 +1,13 @@
-from flask import Flask,render_template, request, abort, jsonify
+from flask import Flask, render_template, request, abort, jsonify
 from partDAO import partDAO
 
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
-part=[
+part = [
 
-    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52, "Vehicle": "VW Golf"},
-    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60, "Vehicle": "VW Golf"},
-    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86, "Vehicle": "VW Golf"}
+    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52},
+    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60},
+    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86}
 
 ]
 
@@ -20,8 +20,8 @@ def index():
 
 @app.route('/parts')
 def getAll():
-    #results = partDAO.getAll()
-    return jsonify(part)
+    results = partDAO.getAll()
+    return jsonify(results)
 
 @app.route('/parts/<int:id>')
 def findById(id):
@@ -36,19 +36,17 @@ def create():
     if not request.json:
         abort(400)
     
-    part = {
+    new_part = {
 
         "id": nextId,
         "Part_Number": request.json["Part_Number"],
         "Part_Name": request.json["Part_Name"],
         "Price": request.json["Price"],
-        "Vehicle": request.json["Vehicle"],
     }
 
-    values =(part['id'],part['Part_Number'],part['Part_Name'],part['Price'],part['Vehicle'],)
-    newId = partDAO.create(values)
-    part['id'] = newId
-    return jsonify(part)
+    part.append(new_part)
+    nextId += 1 
+    return jsonify(new_part)
 
 @app.route('/parts/<int:id>', methods=['PUT'])
 def update(id):
@@ -72,9 +70,6 @@ def update(id):
         currentPart['Part_Name'] = request.json['Part_Name']
     if 'Price' in request.json:
         currentPart['Price'] = request.json['Price']
-    if 'Vehicle' in request.json:
-        currentPart['Vehicle'] = request.json['Vehicle']
-
     return jsonify(currentPart)
 
 @app.route('/parts/<int:id>', methods=['DELETE'])

@@ -6,8 +6,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
-        <h1>Books</h1>
-        <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
+        <h1>Parts</h1>
         <div>
             <table class="table" id="partTable">
                 <tr>
@@ -17,14 +16,13 @@
                             Part Number
                         </th>
                         <th>Price</th>
-                        <th>Update</th>
-                        <th>Delete</th>
                 </tr>
                 
             </table>
         </div>
+        <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
         <div id='createUpdateForm' style="display: none">
-                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Book</h2>
+                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Part</h2>
                 <input type="hidden" name="id"/>
                 Part Name <input type="text" name="part_name" /><br/>
                 Part Number <input type="text" name="part_no"/> <br/>
@@ -35,6 +33,7 @@
         </div>
     </body>
     <script>
+
     function showCreate(){
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('partTable').style.display="none"
@@ -47,11 +46,14 @@
         document.getElementById('doUpdateButton').style.display="none"
 
     }
+
+
     function showViewAll(){
         document.getElementById('showCreateButton').style.display="block"
         document.getElementById('partTable').style.display="block"
         document.getElementById('createUpdateForm').style.display="none"
     }
+
     function showUpdate(buttonElement){
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('partTable').style.display="none"
@@ -63,36 +65,37 @@
         document.getElementById('doCreateButton').style.display="none"
         document.getElementById('doUpdateButton').style.display="block"
 
-
         var rowElement = buttonElement.parentNode.parentNode
-        // these is a way of finding the closest <tr> which would safer, closest()
         
-        var book = getPartFromRow(rowElement)
+        var part = getPartFromRow(rowElement)
         populateFormWithPart(part)
     }
+
+
     function doCreate(){
         var form = document.getElementById('createUpdateForm')
 
-        var part = {}
-       
-        part.name = form.querySelector('input[name="part_name"]').value
-        part.number = form.querySelector('input[name="part_number"]').value
-        part.price = form.querySelector('input[name="price"]').value
-  
+        var part = {
+            Part_Number: form.querySelector('input[name="part_no"]').value,
+            Part_Name: form.querySelector('input[name="part_name"]').value,
+            Price: form.querySelector('input[name="price"]').value,
+        };
+
         console.log(JSON.stringify(part))
-        createBookAjax(part)
-        
+        createPartAjax(part)
         
     }
+
     function doUpdate(){
         var part = getPartFromForm();
         var rowElement = document.getElementById(part.id);
-        updateBookAjax(part);
-        setBookInRow(rowElement,part);
+        updatePartAjax(part);
+        setPartInRow(rowElement, part);
        
         clearForm();
         showViewAll();
     }
+
     function doDelete(r){
         var tableElement = document.getElementById('partTable');
         var rowElement = r.parentNode.parentNode;
@@ -100,23 +103,22 @@
         deleteBookAjax(rowElement.getAttribute("id"));
         tableElement.deleteRow(index);
     }
-    function addBookToTable(part){
-        var tableElement = document.getElementById('partTable')
-        var rowElement = tableElement.insertRow(-1)
-        rowElement.setAttribute('id',part.id)
+    function addPartToTable(part) {
+        var tableElement = document.getElementById('partTable');
+        var rowElement = tableElement.insertRow(-1);
+        rowElement.setAttribute('id', part.id);
         var cell1 = rowElement.insertCell(0);
-        cell1.innerHTML = part.id
+        cell1.innerHTML = part.id;
         var cell2 = rowElement.insertCell(1);
-        cell2.innerHTML = part.title
+        cell2.innerHTML = part.name; 
         var cell3 = rowElement.insertCell(2);
-        cell3.innerHTML = part.author
+        cell3.innerHTML = part.number; 
         var cell4 = rowElement.insertCell(3);
-        cell4.innerHTML = part.price
+        cell4.innerHTML = part.price; 
         var cell5 = rowElement.insertCell(4);
-        cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+        cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>';
         var cell6 = rowElement.insertCell(5);
-        cell6.innerHTML = '<button onclick=doDelete(this)>delete</button>'
-
+        cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>';
     }
 
     function clearForm(){
@@ -126,40 +128,47 @@
         form.querySelector('input[name="part_no"]').value=''
         form.querySelector('input[name="price"]').value=''
     }
+
     function getPartFromRow(rowElement){
-        var car ={}
+        var part ={}
         part.id  = rowElement.getAttribute('id')
         part.name = rowElement.cells[1].firstChild.textContent
         part.number = rowElement.cells[2].firstChild.textContent
         part.price = parseInt(rowElement.cells[3].firstChild.textContent,10)
         return part
     }
+
     function setPartInRow(rowElement, part){
         rowElement.cells[0].firstChild.textContent= part.id  
         rowElement.cells[1].firstChild.textContent= part.name
         rowElement.cells[2].firstChild.textContent= part.number
         rowElement.cells[3].firstChild.textContent= part.price
-        rowElement.cells[4].firstChild.textContent= part.availabiliity
     }
+
     function populateFormWithPart(part){
         var form = document.getElementById('createUpdateForm')
         form.querySelector('input[name="id"]').disabled = true
         form.querySelector('input[name="id"]').value  = part.id
-        form.querySelector('input[name="part_name"]').value= part_name
+        form.querySelector('input[name="part_name"]').value= part.name
         form.querySelector('input[name="part_no"]').value= part.no
         form.querySelector('input[name="price"]').value= part.price
         return part
     }
+
     function getPartFromForm(){
         var form = document.getElementById('createUpdateForm')
-        var part = {}
-        part.id = form.querySelector('input[name="id"]').value
-        part.name = form.querySelector('input[name="part_name"]').value
-        part.number = form.querySelector('input[name="part_no"]').value
-        part.price = parseInt(form.querySelector('input[name="price"]').value,10)
+        var part = {
+
+        id : form.querySelector('input[name="id"]').value,
+        name : form.querySelector('input[name="part_name"]').value,
+        number : form.querySelector('input[name="part_no"]').value,
+        price : parseInt(form.querySelector('input[name="price"]').value,10)
+
+        }
         console.log(JSON.stringify(part))
-        return book
+        return part
     }
+
     function getAllAjax(){
         $.ajax({
             "url": "http://127.0.0.1:5000/parts",
@@ -200,6 +209,7 @@
             }
         });
     }
+
     function updatePartAjax(part){
         //var car = {"reg":"12 D 1234","price":8000}
         console.log(JSON.stringify(part));
@@ -218,6 +228,7 @@
             }
         });
     }
+
     function deletePartAjax(id){
         
         //console.log(JSON.stringify('deleting '+id));
@@ -238,7 +249,6 @@
     }
     getAllAjax();
   
-
     
     </script>
 </html>
