@@ -170,7 +170,7 @@
 
     function getAllAjax(){
         $.ajax({
-            "url": "/parts",
+            "url": "/parts/",
             "method":"GET",
             "data":"",
             "dataType": "JSON",
@@ -191,7 +191,7 @@
         //var car = {"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}
         console.log(JSON.stringify(part));
         $.ajax({
-            "url": "/parts",
+            "url": "/parts/",
             "method":"POST",
             "data":JSON.stringify(part),
             "dataType": "JSON",
