@@ -27,7 +27,6 @@
                 Part Name <input type="text" name="part_name" /><br/>
                 Part Number <input type="text" name="part_no"/> <br/>
                 Price <input type="number" name="price"/> <br/>
-                Available Stock <input type="number" name="availability"/> <br/>
                 <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
                 <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
@@ -178,7 +177,7 @@
             "success":function(result){
                 //console.log(result);
                 for (part of result){
-                    addBookToTable(part);
+                    addPartToTable(part);
                 }
                 
             },
@@ -200,7 +199,7 @@
             "success":function(result){
                 //console.log(result);
                 part.id = result.id
-                addBookToTable(part)
+                addPartToTable(part)
                 clearForm()
                 showViewAll()
             },
