@@ -39,7 +39,7 @@ def create():
     new_part = {
 
         "id": nextId,
-        "Part_No": request.json["Part_Number"],
+        "Part_No": request.json["Part_No"],
         "Part_Name": request.json["Part_Name"],
         "Price": request.json["Price"],
     }
@@ -58,14 +58,14 @@ def update(id):
         abort(400)
     reqJson = request.json
 
-    if 'price' in reqJson and type(reqJson['price']) is not int:
+    if 'Price' in reqJson and type(reqJson['Price']) is not int:
         abort(400)
     if len(foundparts) == 0:
         return jsonify({}), 404
     
     currentPart = foundparts[0]
-    if 'Part_Number' in request.json:
-        currentPart['Part_Number'] = request.json['Part_Number']
+    if 'Part_No' in request.json:
+        currentPart['Part_No'] = request.json['Part_No']
     if 'Part_Name' in request.json:
         currentPart['Part_Name'] = request.json['Part_Name']
     if 'Price' in request.json:

@@ -75,7 +75,7 @@
         var form = document.getElementById('createUpdateForm')
 
         var part = {
-            Part_Number: form.querySelector('input[name="Part_No"]').value,
+            Part_No: form.querySelector('input[name="Part_No"]').value,
             Part_Name: form.querySelector('input[name="Part_Name"]').value,
             Price: form.querySelector('input[name="Price"]').value,
         };
@@ -101,24 +101,27 @@
         var index = rowElement.rowIndex;
         deleteBookAjax(rowElement.getAttribute("id"));
         tableElement.deleteRow(index);
+
     }
+
     function addPartToTable(part) {
-        var tableElement = document.getElementById('partTable');
-        var rowElement = tableElement.insertRow(-1);
-        rowElement.setAttribute('id', part.id);
-        var cell1 = rowElement.insertCell(0);
-        cell1.innerHTML = part.id;
-        var cell2 = rowElement.insertCell(1);
-        cell2.innerHTML = part.name; 
-        var cell3 = rowElement.insertCell(2);
-        cell3.innerHTML = part.number; 
-        var cell4 = rowElement.insertCell(3);
-        cell4.innerHTML = part.price; 
-        var cell5 = rowElement.insertCell(4);
-        cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>';
-        var cell6 = rowElement.insertCell(5);
-        cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>';
+    var tableElement = document.getElementById('partTable');
+    var rowElement = tableElement.insertRow(-1);
+    rowElement.setAttribute('id', part.id);
+    var cell1 = rowElement.insertCell(0);
+    cell1.innerHTML = part.id;
+    var cell2 = rowElement.insertCell(1);
+    cell2.innerHTML = part.Part_Name;  
+    var cell3 = rowElement.insertCell(2);
+    cell3.innerHTML = part.Part_No;  
+    var cell4 = rowElement.insertCell(3);
+    cell4.innerHTML = part.Price;  
+    var cell5 = rowElement.insertCell(4);
+    cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>';
+    var cell6 = rowElement.insertCell(5);
+    cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>';
     }
+
 
     function clearForm(){
         var form = document.getElementById('createUpdateForm')
