@@ -1,7 +1,6 @@
 import mysql.connector
 import config as cfg
 
-
 class part_DAO:
 
     connection=  ""

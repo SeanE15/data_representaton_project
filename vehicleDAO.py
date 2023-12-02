@@ -1,5 +1,5 @@
 import mysql.connector
-import dbconfig as cfg
+import config as cfg
 class vehicle_DAO:
 
     db=""

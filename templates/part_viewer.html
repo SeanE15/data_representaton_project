@@ -214,26 +214,31 @@
         });
 
     }
+
     function createPartAjax(part){
-        //var car = {"reg":"12 D 1234","make":"Fiat","model":"Punto","price":3000}
-        console.log(JSON.stringify(part));
-        $.ajax({
-            "url": "/parts/",
-            "method":"POST",
-            "data":JSON.stringify(part),
-            "dataType": "JSON",
-            contentType: "application/json; charset=utf-8",
-            "success":function(result){
-                //console.log(result);
-                part.id = result.id
-                addPartToTable(part)
-                clearForm()
-                showViewAll()
-            },
-            "error":function(xhr,status,error){
-                console.log("error: "+status+" msg:"+error);
-            }
-        });
+    console.log(JSON.stringify(part));
+    $.ajax({
+        "url": "/parts/",
+        "method":"POST",
+        "data": JSON.stringify({
+            "Part_No": part.Part_No,
+            "Part_Name": part.Part_Name, 
+            "Price": part.Price 
+        }),
+        "dataType": "JSON",
+        contentType: "application/json; charset=utf-8",
+        "success": function(result){
+            part.id = result.id
+            addPartToTable(part)
+            clearForm()
+            showViewAll()
+        },
+        "error": function(xhr, status, error){
+            console.log("error: "+status+" msg:"+error);
+        }
+    });
+
+
     }
 
     function updatePartAjax(part){
