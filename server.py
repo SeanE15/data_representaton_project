@@ -5,9 +5,9 @@ app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
 part = [
 
-    {"id": 1, "Part_Number": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52},
-    {"id": 2, "Part_Number": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60},
-    {"id": 3, "Part_Number": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86}
+    {"id": 1, "Part_No": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52},
+    {"id": 2, "Part_No": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60},
+    {"id": 3, "Part_No": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86}
 
 ]
 
@@ -18,7 +18,7 @@ def index():
     return render_template('part_viewer.html')
     
 
-@app.route('/parts')
+@app.route('/parts/')
 def getAll():
     results = partDAO.getAll()
     return jsonify(results)
@@ -30,7 +30,7 @@ def findById(id):
         return jsonify({}) , 204
     return jsonify(foundparts[0])
 
-@app.route('/parts', methods=['POST'])
+@app.route('/parts/', methods=['POST'])
 def create():
     global nextId
     if not request.json:
@@ -39,7 +39,7 @@ def create():
     new_part = {
 
         "id": nextId,
-        "Part_Number": request.json["Part_Number"],
+        "Part_No": request.json["Part_Number"],
         "Part_Name": request.json["Part_Name"],
         "Price": request.json["Price"],
     }

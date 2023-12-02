@@ -24,9 +24,9 @@
         <div id='createUpdateForm' style="display: none">
                 <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Part</h2>
                 <input type="hidden" name="id"/>
-                Part Name <input type="text" name="part_name" /><br/>
-                Part Number <input type="text" name="part_no"/> <br/>
-                Price <input type="number" name="price"/> <br/>
+                Part Name <input type="text" name="Part_Name" /><br/>
+                Part Number <input type="text" name="Part_No"/> <br/>
+                Price <input type="number" name="Price"/> <br/>
                 <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
                 <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
@@ -75,9 +75,9 @@
         var form = document.getElementById('createUpdateForm')
 
         var part = {
-            Part_Number: form.querySelector('input[name="part_no"]').value,
-            Part_Name: form.querySelector('input[name="part_name"]').value,
-            Price: form.querySelector('input[name="price"]').value,
+            Part_Number: form.querySelector('input[name="Part_No"]').value,
+            Part_Name: form.querySelector('input[name="Part_Name"]').value,
+            Price: form.querySelector('input[name="Price"]').value,
         };
 
         console.log(JSON.stringify(part))
@@ -123,9 +123,9 @@
     function clearForm(){
         var form = document.getElementById('createUpdateForm')
 
-        form.querySelector('input[name="part_name"]').value=''
-        form.querySelector('input[name="part_no"]').value=''
-        form.querySelector('input[name="price"]').value=''
+        form.querySelector('input[name="Part_Name"]').value=''
+        form.querySelector('input[name="Part_No"]').value=''
+        form.querySelector('input[name="Price"]').value=''
     }
 
     function getPartFromRow(rowElement){
@@ -148,9 +148,9 @@
         var form = document.getElementById('createUpdateForm')
         form.querySelector('input[name="id"]').disabled = true
         form.querySelector('input[name="id"]').value  = part.id
-        form.querySelector('input[name="part_name"]').value= part.name
-        form.querySelector('input[name="part_no"]').value= part.no
-        form.querySelector('input[name="price"]').value= part.price
+        form.querySelector('input[name="Part_Name"]').value= part.name
+        form.querySelector('input[name="Part_No"]').value= part.no
+        form.querySelector('input[name="Price"]').value= part.price
         return part
     }
 
@@ -159,9 +159,9 @@
         var part = {
 
         id : form.querySelector('input[name="id"]').value,
-        name : form.querySelector('input[name="part_name"]').value,
-        number : form.querySelector('input[name="part_no"]').value,
-        price : parseInt(form.querySelector('input[name="price"]').value,10)
+        name : form.querySelector('input[name="Part_Name"]').value,
+        number : form.querySelector('input[name="Part_No"]').value,
+        price : parseInt(form.querySelector('input[name="Price"]').value,10)
 
         }
         console.log(JSON.stringify(part))
