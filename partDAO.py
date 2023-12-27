@@ -2,97 +2,69 @@ import mysql.connector
 import config as cfg
 
 class part_DAO:
-
-    connection=  ""
-    cursor =  ''
-    host=       ''
-    user=       ''
-    password=   ''
-    database=   ''
-
     def __init__(self):
-        self.host=       cfg.mysql['host']
-        self.user=       cfg.mysql['user']
-        self.password=   cfg.mysql['password']
-        self.database=   cfg.mysql['database']
+        self.host = cfg.mysql['host']
+        self.user = cfg.mysql['user']
+        self.password = cfg.mysql['password']
+        self.database = cfg.mysql['database']
+        self.connection = None
+        self.cursor = None
 
-    def getcursor(self): 
+    def getcursor(self):
         self.connection = mysql.connector.connect(
-            host=       self.host,
-            user=       self.user,
-            password=   self.password,
-            database=   self.database,
+            host=self.host,
+            user=self.user,
+            password=self.password,
+            database=self.database,
         )
         self.cursor = self.connection.cursor()
         return self.cursor
 
-    def closeAll(self):
-        self.connection.close()
-        self.cursor.close()
-         
+    def close_all(self):
+        if self.connection:
+            self.connection.close()
+        if self.cursor:
+            self.cursor.close()
+
     def create(self, values):
-        cursor = self.getcursor()
-        sql="insert into part (id, Part_No, Part_Name, Price) values (%s,%s,%s,%s)"
-        cursor.execute(sql, values)
+        with self.getcursor() as cursor:
+            sql = "INSERT INTO part (id, Part_No, Part_Name, Price) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, values)
+            self.connection.commit()
+            new_id = cursor.lastrowid
+        return new_id
 
-        self.connection.commit()
-        newid = cursor.lastrowid
-        self.closeAll()
-        return newid
+    def get_all(self):
+        with self.getcursor() as cursor:
+            sql = "SELECT * FROM part"
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            return [self.convert_to_dictionary(result) for result in results]
 
-    def getAll(self):
-        cursor = self.getcursor()
-        sql="select * from part"
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        returnArray = []
-        print(results)
-        for result in results:
-            print(result)
-            returnArray.append(self.convertToDictionary(result))
-        
-        self.closeAll()
-        return returnArray
-
-    def findByID(self, id):
-        cursor = self.getcursor()
-        sql="select * from part where id = %s"
-        values = (id,)
-
-        cursor.execute(sql, values)
-        result = cursor.fetchone()
-        returnvalue = self.convertToDictionary(result)
-        self.closeAll()
-        return returnvalue
+    def find_by_id(self, _id):
+        with self.getcursor() as cursor:
+            sql = "SELECT * FROM part WHERE id = %s"
+            values = (_id,)
+            cursor.execute(sql, values)
+            result = cursor.fetchone()
+            return self.convert_to_dictionary(result) if result else None
 
     def update(self, values):
-        cursor = self.getcursor()
-        sql="update part set Part_No= %s, Part_Name=%s, Price=%s where id = %s"
-        cursor.execute(sql, values)
-        self.connection.commit()
-        self.closeAll()
-        
-    def delete(self, id):
-        cursor = self.getcursor()
-        sql="delete from part where id = %s"
-        values = (id,)
+        with self.getcursor() as cursor:
+            sql = "UPDATE part SET Part_No=%s, Part_Name=%s, Price=%s WHERE id=%s"
+            cursor.execute(sql, values)
+            self.connection.commit()
 
-        cursor.execute(sql, values)
+    def delete(self, _id):
+        with self.getcursor() as cursor:
+            sql = "DELETE FROM part WHERE id = %s"
+            values = (_id,)
+            cursor.execute(sql, values)
+            self.connection.commit()
 
-        self.connection.commit()
-        self.closeAll()
-        
-        print("delete completed")
+    def convert_to_dictionary(self, result):
+        col_names = ['id', 'Part_No', 'Part_Name', 'Price']
+        return dict(zip(col_names, result)) if result else None
 
-    def convertToDictionary(self, result):
-        colnames=['id','Part_No','Part_Name', "Price"]
-        item = {}
-        
-        if result:
-            for i, colName in enumerate(colnames):
-                value = result[i]
-                item[colName] = value
-        
-        return item
-        
+# Instantiate the part_DAO class
 partDAO = part_DAO()
