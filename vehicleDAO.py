@@ -47,6 +47,7 @@ class vehicle_DAO:
         sql="update vehicle set make= %s, model=%s, age=%s  where id = %s"
         cursor.execute(sql, values)
         self.db.commit()
+        
     def delete(self, id):
         cursor = self.db.cursor()
         sql="delete from vehicle where id = %s"

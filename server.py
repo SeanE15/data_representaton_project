@@ -3,16 +3,6 @@ from partDAO import partDAO
 
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
-part = [
-
-    {"id": 1, "Part_No": "03L152652B", "Part_Name": "Oil Filter", "Price": 12.52},
-    {"id": 2, "Part_No": "04K664532B", "Part_Name": "Pollen Filter", "Price": 30.60},
-    {"id": 3, "Part_No": "05L332169", "Part_Name": "Sump Plug", "Price": 2.86}
-
-]
-
-nextId=4
-
 @app.route('/')
 def index():
     return render_template('part_viewer.html')
@@ -25,61 +15,55 @@ def getAll():
 
 @app.route('/parts/<int:id>')
 def findById(id):
-    foundparts = list(filter (lambda t : t["id"]== id, part))
-    if len(foundparts) == 0:
-        return jsonify({}) , 204
-    return jsonify(foundparts[0])
+    part = partDAO.find_by_id(id)
+    if part:
+        return jsonify(part)
+    else:
+        return jsonify({}), 204
 
 @app.route('/parts/', methods=['POST'])
 def create():
-    global nextId
     if not request.json:
         abort(400)
     
-    new_part = {
+    values = (
 
-        "id": nextId,
-        "Part_No": request.json["Part_No"],
-        "Part_Name": request.json["Part_Name"],
-        "Price": request.json["Price"],
-    }
+        request.json.get("Part_No"),
+        request.json.get("Part_Name"),
+        request.json.get("Price"),
+    )
 
-    part.append(new_part)
-    nextId += 1 
-    return jsonify(new_part)
+    new_id = partDAO.create(values)
+    return jsonify({"id": new_id}), 201
 
 @app.route('/parts/<int:id>', methods=['PUT'])
 def update(id):
-    foundparts = list(filter(lambda t: t["id"] == id, part))
-    if not foundparts:
+    part = partDAO.find_by_id(id)
+    if not part:
         abort(404)
     
     if not request.json:
         abort(400)
-    reqJson = request.json
-
-    if 'Price' in reqJson and type(reqJson['Price']) is not int:
-        abort(400)
-    if len(foundparts) == 0:
-        return jsonify({}), 404
     
-    currentPart = foundparts[0]
-    if 'Part_No' in request.json:
-        currentPart['Part_No'] = request.json['Part_No']
-    if 'Part_Name' in request.json:
-        currentPart['Part_Name'] = request.json['Part_Name']
-    if 'Price' in request.json:
-        currentPart['Price'] = request.json['Price']
-    return jsonify(currentPart)
+    values = (
+
+        request.json.get("Part_No"),
+        request.json.get("Part_Name"),
+        request.json.get("Price"),
+        id
+    )
+
+    partDAO.update(values)
+    return jsonify({"id": id, "updated": True})
 
 @app.route('/parts/<int:id>', methods=['DELETE'])
 def delete(id):
-    foundparts = list(filter(lambda t: t["id"] == id, part))
-    if len(foundparts) == 0:
+    part = partDAO.find_by_id(id)
+    if not part:
         return jsonify({}), 404
-    part.remove(foundparts[0])
 
-    return jsonify({"done":True})
+    partDAO.delete(id)
+    return jsonify({"id": id, "deleted": True})
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@
             <!-- Creating a carousel of images for the different console types; Images will bring to console official home-pages if clicked -->
             <div id="my_carousel" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner">
-                    <!-- Set timer to 10 seconds per slide (10000 milliseconds); images shown are int he images folder and relative paths are shown in code -->
+                    <!-- Set timer to 5 seconds per slide (5000 milliseconds); images shown are in the images folder and relative paths are shown in code -->
                     <!-- The dimensions of the images are also all adjusted to be the same to avoid any clipping on the page between rotations of the carousel -->
                     <div class="carousel-item active" data-bs-interval="5000">
                         <a href="https://www.micksgarage.com/home?gad_source=1&gclid=EAIaIQobChMI4dK267vwggMVVotQBh1TLQnWEAAYASAAEgKRb_D_BwE">
@@ -98,8 +98,8 @@
         var form = document.getElementById('createUpdateForm')
 
         var part = {
-            Part_No: form.querySelector('input[name="Part_No"]').value,
             Part_Name: form.querySelector('input[name="Part_Name"]').value,
+            Part_No: form.querySelector('input[name="Part_No"]').value,
             Price: form.querySelector('input[name="Price"]').value,
         };
 
@@ -175,7 +175,7 @@
         form.querySelector('input[name="id"]').disabled = true
         form.querySelector('input[name="id"]').value  = part.id
         form.querySelector('input[name="Part_Name"]').value= part.name
-        form.querySelector('input[name="Part_No"]').value= part.no
+        form.querySelector('input[name="Part_No"]').value= part.number
         form.querySelector('input[name="Price"]').value= part.price
         return part
     }
@@ -220,8 +220,8 @@
         "url": "/parts/",
         "method":"POST",
         "data": JSON.stringify({
-            "Part_No": part.Part_No,
             "Part_Name": part.Part_Name, 
+            "Part_No": part.Part_No,
             "Price": part.Price 
         }),
         "dataType": "JSON",
@@ -246,7 +246,11 @@
         $.ajax({
             "url": "/parts/"+encodeURI(part.id),
             "method":"PUT",
-            "data":JSON.stringify(part),
+            "data": JSON.stringify({
+            "Part_Name": part.Part_Name,
+            "Part_No": part.Part_No,
+            "Price": part.Price
+            }),
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success":function(result){
