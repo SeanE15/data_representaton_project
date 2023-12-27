@@ -34,7 +34,7 @@ class part_DAO:
             new_id = cursor.lastrowid
         return new_id
 
-    def get_all(self):
+    def getAll(self):
         with self.getcursor() as cursor:
             sql = "SELECT * FROM part"
             cursor.execute(sql)
