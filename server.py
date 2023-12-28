@@ -27,11 +27,11 @@ def create():
         abort(400)
     
     values = (
-
-        request.json.get("Part_No"),
         request.json.get("Part_Name"),
+        request.json.get("Part_No"),
         request.json.get("Price"),
     )
+
 
     new_id = partDAO.create(values)
     return jsonify({"id": new_id}), 201
@@ -47,8 +47,8 @@ def update(id):
     
     values = (
 
-        request.json.get("Part_No"),
         request.json.get("Part_Name"),
+        request.json.get("Part_No"),
         request.json.get("Price"),
         id
     )

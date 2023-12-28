@@ -87,6 +87,9 @@
         document.getElementById('doCreateButton').style.display="none"
         document.getElementById('doUpdateButton').style.display="block"
 
+        // Clear the form before populating it
+        clearForm();
+
         var rowElement = buttonElement.parentNode.parentNode
         
         var part = getPartFromRow(rowElement)
