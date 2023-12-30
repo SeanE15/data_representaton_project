@@ -28,18 +28,44 @@ def getFormatted(dataset):
     sizes = data["size"]
     valuecount = 0
     result = {}
-    
+
     for dim0 in range(0, sizes[0]):
         currentId = ids[0]
         index = dimensions[currentId]["category"]["index"][dim0]
         label0 = dimensions[currentId]["category"]["label"][index]
-        result[label0]={}
+        result[label0] = {}
         print(label0)
-                        
-        db_values = (label0, int(values[valuecount]))
-        pointsDAO.create(*db_values)
-                        
-        valuecount+=1
+
+        for dim1 in range(0, sizes[1]):
+            currentId = ids[1]
+            index = dimensions[currentId]["category"]["index"][dim1]
+            label1 = dimensions[currentId]["category"]["label"][index]
+            result[label0][label1] = {}
+
+            for dim2 in range(0, sizes[2]):
+                currentId = ids[2]
+                index = dimensions[currentId]["category"]["index"][dim2]
+                label2 = dimensions[currentId]["category"]["label"][index]
+                result[label0][label1][label2] = {}
+
+                # Check if there is a dimension at index 3 before accessing it
+                for dim3 in range(0, sizes[3]):
+                    currentId = ids[3]
+                    index = dimensions[currentId]["category"]["index"][dim3]
+                    label3 = dimensions[currentId]["category"]["label"][index]
+                    result[label0][label1][label2][label3] = {}
+
+                    if len(sizes) > 4:
+                        for dim4 in range(0, sizes[4]):
+                            currentId = ids[4]
+                            index = dimensions[currentId]["category"]["index"][dim4]
+                            label4 = dimensions[currentId]["category"]["label"][index]
+                            result[label0][label1][label2][label3][label4] = int(values[valuecount])
+
+                            db_values = (label0, label1, label2, label3, label4, int(values[valuecount]))
+                            pointsDAO.create(*db_values)
+
+                        valuecount += 1
         
     return result
     
