@@ -31,6 +31,10 @@
                 </div>
         <div>
             <h1 class="text-center">Parts Catalogue</h1>
+            <h3 class="text-center">Help us create Ireland's most extensive parts catalogue!</h3>
+            <p> You can help us to become Ireland's first community driven parts catalogue by using your indepth knowledge of parts. Established in 2023 - Irish AutoBiz is a community driven project looking to create an extensive list of parts using OEM numbers and manufacturer pricing.
+                Help us reach our goal of 500 parts before 2024 and every contributer will be entered into a draw to win a fabulous prize!
+            </p>
             <table class="table" id="partTable">
                 <tr>
                         <th>id</th>
@@ -41,6 +45,21 @@
                         <th>Price</th>
                 </tr>
                 
+            </table>
+        </div>
+        <div>
+            <h2 class="text-center">Penalty Point Counter</h2>
+            <label for="countyInput">County:</label>
+            <input type="text" id="countyInput" name="countyInput">
+            <label for="yearInput">Year:</label>
+            <input type="text" id="yearInput" name="yearInput">
+            <button onclick="searchPenaltyPoints()">Search</button>
+        
+            <table class="table" id="pointsTable">
+                <tr>
+                    <th>id</th>
+                    <th>Penalty Points List</th>
+                </tr>
             </table>
         </div>
         <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
@@ -197,6 +216,41 @@
         return part
     }
 
+    function searchPenaltyPoints() {
+        var county = document.getElementById('countyInput').value;
+        var year = document.getElementById('yearInput').value;
+        getPenaltyPointsByCountyAndYear(county, year);
+    }
+
+    function updatePenaltyPointsTable(point) {
+        var tableElement = document.getElementById('pointsTable');
+
+        // Clear existing rows from the table
+        while (tableElement.rows.length > 1) {
+            tableElement.deleteRow(1);
+        }
+
+        // Loop through the data and add rows to the table
+        for (var county in data['Drivers cumulative penalty points']['2022']) {
+            var rowElement = tableElement.insertRow(-1);
+            rowElement.setAttribute('id', county);
+
+            // Column 1: County Name
+            var cell1 = rowElement.insertCell(0);
+            cell1.innerHTML = county;
+
+            // Column 2: Total penalty points
+            var cell2 = rowElement.insertCell(1);
+            cell2.innerHTML = data['Drivers cumulative penalty points']['2022'][county]['Total penalty points'];
+
+            // Column 3 to Column N: Individual penalty points
+            for (var i = 1; i <= 12; i++) {
+                var cell = rowElement.insertCell(i + 1);
+                cell.innerHTML = data['Drivers cumulative penalty points']['2022'][county][i + ' penalty point'];
+            }
+        }
+    }
+
     function getAllAjax(){
         $.ajax({
             "url": "/parts/",
@@ -281,6 +335,24 @@
             },
             "error":function(xhr,status,error){
                 console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function getPenaltyPointsByCountyAndYear(county, year) {
+        // Perform an AJAX request to retrieve penalty points by county and year
+        // Update the pointsTable with the results
+        $.ajax({
+            "url": "/points/", 
+            "method": "GET",
+            "data": { "county": county, "year": year },
+            "dataType": "JSON",
+            "success": function (result) {
+                // Update the pointsTable with the retrieved data
+                updatePenaltyPointsTable(result);
+            },
+            "error": function (xhr, status, error) {
+                console.log("error: " + status + " msg:" + error);
             }
         });
     }

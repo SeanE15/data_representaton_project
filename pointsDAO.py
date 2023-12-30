@@ -1,5 +1,6 @@
 import mysql.connector
 import config as cfg
+import json
 
 class points_DAO:
     def __init__(self):
@@ -22,11 +23,12 @@ class points_DAO:
         if self.connection:
             self.connection.close()
 
-    def create(self, label, penalty_points):
+    def create(self, year, county, label, penalty_points):
         with self.getcursor() as cursor:
             try:
-                sql = "INSERT INTO points (`Drivers cumulative penalty points`, `7182`, `unit_value`, `year_value`) VALUES (%s, %s, %s, %s)"
-                values = (label, penalty_points, 'unit_value', 'year_value')
+                sql = "INSERT INTO points (`Year`, `County`, `Label`, `PenaltyPoints`) VALUES (%s, %s, %s, %s)"
+                penalty_points_str = json.dumps(penalty_points)
+                values = (year, county, label, penalty_points_str)
                 print("Debug: Values before execution:", values)
                 cursor.execute(sql, values)
                 self.connection.commit()
@@ -46,17 +48,8 @@ class points_DAO:
         finally:
             cursor.close()
 
-    def update(self, values):
-        try:
-            cursor = self.getcursor()
-            sql = "UPDATE points SET `Drivers cumulative penalty points`=%s, `7182`=%s, `unit_value`=%s, `year_value`=%s"
-            cursor.execute(sql, values)
-            self.connection.commit()
-        finally:
-            cursor.close()
-
     def convert_to_dictionary(self, result):
-        col_names = ['Drivers cumulative penalty points', '7182', 'unit_value', 'year_value']
+        col_names = ['Year', 'County', 'Label', 'PenaltyPoints']
         return dict(zip(col_names, result)) if result else None
 
 # Instantiate the points_DAO class
