@@ -16,8 +16,9 @@ def getAll(dataset):
 
 def getFormattedAsFile(dataset):
     with open("cso-formatted.json", "wt") as fp:
-        print(json.dumps(getFormatted(dataset)), file=fp)
-  
+        formatted_data = getFormatted(dataset)
+        print(json.dumps(formatted_data), file=fp)
+        print("Debug: Data written to cso-formatted.json")
 
 def getFormatted(dataset):
     data = getAll(dataset)

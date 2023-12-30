@@ -25,7 +25,7 @@ class points_DAO:
     def create(self, label, penalty_points):
         with self.getcursor() as cursor:
             try:
-                sql = "INSERT INTO part (county, penalty_points, unit, year) VALUES (%s, %s, %s, %s)"
+                sql = "INSERT INTO points (`Drivers cumulative penalty points`, `7182`, `unit_value`, `year_value`) VALUES (%s, %s, %s, %s)"
                 values = (label, penalty_points, 'unit_value', 'year_value')
                 print("Debug: Values before execution:", values)
                 cursor.execute(sql, values)
@@ -35,7 +35,6 @@ class points_DAO:
                 print(f"Error in create: {e}")
                 new_id = None
         return new_id
-
 
     def getAll(self):
         try:
@@ -50,16 +49,15 @@ class points_DAO:
     def update(self, values):
         try:
             cursor = self.getcursor()
-            sql = "UPDATE part SET county=%s, penalty_points=%s, unit=%s, year=%s"
+            sql = "UPDATE points SET `Drivers cumulative penalty points`=%s, `7182`=%s, `unit_value`=%s, `year_value`=%s"
             cursor.execute(sql, values)
             self.connection.commit()
         finally:
             cursor.close()
 
-
     def convert_to_dictionary(self, result):
-        col_names = ['county', 'penalty_points', 'unit', 'year']
+        col_names = ['Drivers cumulative penalty points', '7182', 'unit_value', 'year_value']
         return dict(zip(col_names, result)) if result else None
 
-# Instantiate the part_DAO class
+# Instantiate the points_DAO class
 pointsDAO = points_DAO()
