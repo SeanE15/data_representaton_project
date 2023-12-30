@@ -63,7 +63,7 @@ def getFormatted(dataset):
                             result[label0][label1][label2][label3][label4] = int(values[valuecount])
 
                             db_values = (label0, label1, label2, label3, label4, int(values[valuecount]))
-                            pointsDAO.create(*db_values)
+                            pointsDAO.create(db_values)
 
                         valuecount += 1
         
