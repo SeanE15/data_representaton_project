@@ -60,6 +60,7 @@ def getFormatted(dataset):
                             currentId = ids[4]
                             index = dimensions[currentId]["category"]["index"][dim4]
                             label4 = dimensions[currentId]["category"]["label"][index]
+                            print("\t\t\t",label4, " ", values[valuecount])
                             result[label0][label1][label2][label3][label4] = int(values[valuecount])
 
                             db_values = (label0, label1, label2, label3, label4, int(values[valuecount]))

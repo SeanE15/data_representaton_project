@@ -27,8 +27,8 @@ class points_DAO:
         with self.getcursor() as cursor:
             try:
                 sql = "INSERT INTO points (`Year`, `County`, `Label`, `PenaltyPoints`) VALUES (%s, %s, %s, %s)"
-                penalty_points_str = json.dumps(penalty_points)
-                values = (year, county, label, penalty_points_str)
+                #penalty_points_str = json.dumps(penalty_points)
+                values = (year, county, label, json.dumps(penalty_points))
                 print("Debug: Values before execution:", values)
                 cursor.execute(sql, values)
                 self.connection.commit()

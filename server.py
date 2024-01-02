@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, abort, jsonify
 from partDAO import partDAO
+from pointsDAO import pointsDAO
 
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
@@ -64,6 +65,11 @@ def delete(id):
 
     partDAO.delete(id)
     return jsonify({"id": id, "deleted": True})
+
+@app.route('/points/')
+def getCsoData():
+    results = pointsDAO.getAll()
+    return jsonify(results)
 
 
 if __name__ == "__main__":

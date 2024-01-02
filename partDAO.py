@@ -33,6 +33,7 @@ class part_DAO:
             except Exception as e:
                 print(f"Error in create: {e}")
                 new_id = None
+            cursor.close()
         return new_id
 
 
