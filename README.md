@@ -5,7 +5,7 @@
 
 ### <div align="center">Introduction</div>
 
-Hello, and welcome to my Github Repository. This repository has been created in order to satify the work required to complete the Data Representation module - which is a key part to my completion of the HDip in Computer Science with Data Analytics at the Atlantic Technological University. This repository contains one main body of work - a project in which we were tasked with writing a program that creates and comsumes RESTful APIs. We had to create a web application in Flask that has a RESTful API and link the app with one or more database tables. We then had to create a webpage that consumes the API (ie. perform CRUD operations).
+Hello, and welcome to my Github Repository. This repository has been created in order to satify the work required to complete the Data Representation module - which is a key part to my completion of the HDip in Computer Science with Data Analytics at the Atlantic Technological University. This repository contains one main body of work - a project in which we were tasked with writing a program that creates and consumes RESTful APIs. We had to create a web application in Flask that has a RESTful API and link the app with one or more database tables. We then had to create a webpage that consumes the API (ie. perform CRUD operations).
 
 ---- 
 

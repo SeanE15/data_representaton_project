@@ -26,15 +26,14 @@ class points_DAO:
         if self.connection:
             self.connection.close()
 
-    def create(self, year, county, label, penalty_points):
+    def create(self, db_values):
     # Create a new record in the 'points' table
         with self.getcursor() as cursor:
             try:
                 # Fix the SQL query to properly handle column names with spaces
-                sql = "INSERT INTO points ('statistic_label', 'year', 'county', 'Penalty_Points_Applied', 'UNIT', 'value') VALUES (%s, %s, %s, %s, %s, %s)"
-                values = (year, county, label, json.dumps(penalty_points))
-                print("Debug: Values before execution:", values)
-                cursor.execute(sql, values)
+                sql = "INSERT INTO points (statistic_label, year, county, Penalty_Points_Applied, UNIT, value) VALUES (%s, %s, %s, %s, %s, %s)"
+                print("Debug: Values before execution:", db_values)
+                cursor.execute(sql, db_values)
                 self.connection.commit()
                 new_id = cursor.lastrowid
                 # Error handling

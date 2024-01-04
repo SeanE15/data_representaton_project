@@ -267,12 +267,6 @@
         return part
     }
 
-    function getPenaltyPoints() {
-        var county = document.getElementById('countyInput').value;
-        var year = document.getElementById('yearInput').value;
-        getPenaltyPointsByCountyAndYear(county, year);
-    }
-
     function getAllAjax(){
         $.ajax({
             "url": "/parts/",
@@ -373,6 +367,12 @@
                 console.log("error: " + status + " msg:" + error);
             }
         });
+    }
+
+    function getPenaltyPoints() {
+        var county = document.getElementById('countyInput').value;
+        var year = document.getElementById('yearInput').value;
+        getPenaltyPointsByCountyAndYear(county, year);
     }
 
     // Update UI with the retrieved data.
