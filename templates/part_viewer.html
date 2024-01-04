@@ -112,7 +112,7 @@
             <input type="text" id="countyInput" name="countyInput">
             <label for="yearInput">Year:</label>
             <input type="text" id="yearInput" name="yearInput">
-            <button onclick="searchPenaltyPoints()">Search</button>
+            <button onclick="getPenaltyPoints()">Search</button>
         
             <table class="table" id="pointsTable">
                 <tr>
@@ -267,7 +267,7 @@
         return part
     }
 
-    function searchPenaltyPoints() {
+    function getPenaltyPoints() {
         var county = document.getElementById('countyInput').value;
         var year = document.getElementById('yearInput').value;
         getPenaltyPointsByCountyAndYear(county, year);
@@ -357,7 +357,7 @@
         });
     }
 
-    function getPenaltyPoints(county, year) {
+    function getPenaltyPointsByCountyAndYear(county, year) {
         // Perform an AJAX request to retrieve penalty points by county and year
         // Update the pointsTable with the results
         $.ajax({
@@ -374,10 +374,21 @@
             }
         });
     }
+
     // Update UI with the retrieved data.
-    function updatePenaltyPointsTable(point) {
-    console.log(point);
-    }
+    function updatePenaltyPointsTable(points) {
+            var tableElement = document.getElementById('pointsTable');
+            // Clear existing rows from the table
+            tableElement.innerHTML = '<tr><th>Penalty Points List - County</th></tr>';
+
+            // Add a new row for each point in the retrieved data
+            for (var i = 0; i < points.length; i++) {
+                var rowElement = tableElement.insertRow(-1);
+                var cellElement = rowElement.insertCell(0);
+                cellElement.innerHTML = points[i]["Statistic Label"] + ": " + points[i]["VALUE"];
+            }
+        }
+    
 
     getAllAjax();
   

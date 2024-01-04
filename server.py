@@ -69,11 +69,12 @@ def delete(id):
     partDAO.delete(id)
     return jsonify({"id": id, "deleted": True})
 
-@app.route('/points/')
-def getCsoData():
-    # Retrieve all data from the 'points' table and return as JSON
-    results = pointsDAO.getAll()
-    return jsonify(results)
+@app.route('/points/', methods=['GET'])
+def getPenaltyPoints():
+    # Retrieve all penalty points details from the 'points' table and return as JSON
+    penalty_points = pointsDAO.getAll()
+    return jsonify(penalty_points)
+
 
 # Run the Flask app in debug mode
 if __name__ == "__main__":
