@@ -6,16 +6,18 @@ app = Flask(__name__, static_url_path='', static_folder='staticpages')
 
 @app.route('/')
 def index():
+    # Render the main page for the part viewer
     return render_template('part_viewer.html')
     
-
 @app.route('/parts/')
 def getAll():
+    # Retrieve all parts from the database and return as JSON
     results = partDAO.getAll()
     return jsonify(results)
 
 @app.route('/parts/<int:id>')
 def findById(id):
+    # Retrieve a specific part by ID from the database and return as JSON
     part = partDAO.find_by_id(id)
     if part:
         return jsonify(part)
@@ -24,6 +26,7 @@ def findById(id):
 
 @app.route('/parts/', methods=['POST'])
 def create():
+    # Create a new part in the database using data from the request JSON
     if not request.json:
         abort(400)
     
@@ -33,12 +36,12 @@ def create():
         request.json.get("Price"),
     )
 
-
     new_id = partDAO.create(values)
     return jsonify({"id": new_id}), 201
 
 @app.route('/parts/<int:id>', methods=['PUT'])
 def update(id):
+    # Update an existing part in the database using data from the request JSON
     part = partDAO.find_by_id(id)
     if not part:
         abort(404)
@@ -47,7 +50,6 @@ def update(id):
         abort(400)
     
     values = (
-
         request.json.get("Part_Name"),
         request.json.get("Part_No"),
         request.json.get("Price"),
@@ -59,6 +61,7 @@ def update(id):
 
 @app.route('/parts/<int:id>', methods=['DELETE'])
 def delete(id):
+    # Delete a part from the database by ID
     part = partDAO.find_by_id(id)
     if not part:
         return jsonify({}), 404
@@ -68,9 +71,10 @@ def delete(id):
 
 @app.route('/points/')
 def getCsoData():
+    # Retrieve all data from the 'points' table and return as JSON
     results = pointsDAO.getAll()
     return jsonify(results)
 
-
+# Run the Flask app in debug mode
 if __name__ == "__main__":
     app.run(debug=True)

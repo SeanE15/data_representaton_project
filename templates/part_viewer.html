@@ -1,11 +1,14 @@
 <html>
     <head>
+        <!-- Meta information and title -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Homepage</title>
+        <!-- Bootstrap CSS and jQuery/Bootstrap JS from CDN -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <!-- Internal Styles -->
         <style>
             body {
                 background-color: #007bff; 
@@ -74,7 +77,7 @@
         <div>
             <h1 class="text-center">Parts Catalogue</h1>
             <h3 class="text-center">Help us create Ireland's most extensive parts catalogue!</h3>
-            <p> You can help us to become Ireland's first community driven parts catalogue by using your indepth knowledge of parts. Established in 2023 - Irish AutoBiz is a community driven project looking to create an extensive list of parts using OEM numbers and manufacturer pricing.
+            <p class="text-center"> You can help us to become Ireland's first community driven parts catalogue by using your indepth knowledge of parts. Established in 2023 - Irish AutoBiz is a community driven project looking to create an extensive list of parts using OEM numbers and manufacturer pricing.
                 Help us reach our goal of 500 parts before 2024 and every contributer will be entered into a draw to win a fabulous prize!
             </p>
             <table class="table" position="center" id="partTable">
@@ -102,8 +105,8 @@
 
         <div>
             <h2 class="text-center">Penalty Point Counter</h2>
-            <p> With the recent clamp down on speeding/drink driving we have included on this website a link to data from the CSO website about Penalty Points which were issued between 2021 and 2022.
-                The information can be viewed on a county by county basis, and when selecting which county to view, dont forget to choose from the years 2021 or 2022!.
+            <p class="text-center"> With the recent clamp down on speeding/drink driving we have included on this website a link to data from the CSO website about Penalty Points which were issued between 2021 and 2022.
+                The information can be viewed on a county by county basis, and when selecting which county to view, dont forget to choose from the years 2021 or 2022!
             </p>
             <label for="countyInput">County:</label>
             <input type="text" id="countyInput" name="countyInput">
@@ -120,7 +123,7 @@
     </body>
 
     <script>
-
+    // Functions for handling UI elements
     function showCreate(){
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('partTable').style.display="none"
@@ -133,7 +136,6 @@
         document.getElementById('doUpdateButton').style.display="none"
 
     }
-
 
     function showViewAll(){
         document.getElementById('showCreateButton').style.display="block"
@@ -161,7 +163,7 @@
         populateFormWithPart(part)
     }
 
-
+    // CRUD Operations 
     function doCreate(){
         var form = document.getElementById('createUpdateForm')
 
@@ -195,6 +197,7 @@
 
     }
 
+    // Function for adding parts to the table on the webpage
     function addPartToTable(part) {
     var tableElement = document.getElementById('partTable');
     var rowElement = tableElement.insertRow(-1);
@@ -213,7 +216,7 @@
     cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>';
     }
 
-
+    //Function for clearing the form after details have been entered.
     function clearForm(){
         var form = document.getElementById('createUpdateForm')
 
@@ -238,6 +241,7 @@
         rowElement.cells[3].firstChild.textContent= part.price
     }
 
+    // Query Selectors for form on page.
     function populateFormWithPart(part){
         var form = document.getElementById('createUpdateForm')
         form.querySelector('input[name="id"]').disabled = true
@@ -248,6 +252,7 @@
         return part
     }
 
+    // Push part created in the form to a JSON file for the database.
     function getPartFromForm(){
         var form = document.getElementById('createUpdateForm')
         var part = {
@@ -268,35 +273,6 @@
         getPenaltyPointsByCountyAndYear(county, year);
     }
 
-    function updatePenaltyPointsTable(point) {
-        var tableElement = document.getElementById('pointsTable');
-
-        // Clear existing rows from the table
-        while (tableElement.rows.length > 1) {
-            tableElement.deleteRow(1);
-        }
-
-        // Loop through the data and add rows to the table
-        for (var county in data['Drivers cumulative penalty points']['2022']) {
-            var rowElement = tableElement.insertRow(-1);
-            rowElement.setAttribute('id', county);
-
-            // Column 1: County Name
-            var cell1 = rowElement.insertCell(0);
-            cell1.innerHTML = county;
-
-            // Column 2: Total penalty points
-            var cell2 = rowElement.insertCell(1);
-            cell2.innerHTML = data['Drivers cumulative penalty points']['2022'][county]['Total penalty points'];
-
-            // Column 3 to Column N: Individual penalty points
-            for (var i = 1; i <= 12; i++) {
-                var cell = rowElement.insertCell(i + 1);
-                cell.innerHTML = data['Drivers cumulative penalty points']['2022'][county][i + ' penalty point'];
-            }
-        }
-    }
-
     function getAllAjax(){
         $.ajax({
             "url": "/parts/",
@@ -304,7 +280,6 @@
             "data":"",
             "dataType": "JSON",
             "success":function(result){
-                //console.log(result);
                 for (part of result){
                     addPartToTable(part);
                 }
@@ -317,6 +292,7 @@
 
     }
 
+    // AJAX CRUD Operations using the JSON file created above.
     function createPartAjax(part){
     console.log(JSON.stringify(part));
     $.ajax({
@@ -344,7 +320,6 @@
     }
 
     function updatePartAjax(part){
-        //var car = {"reg":"12 D 1234","price":8000}
         console.log(JSON.stringify(part));
         $.ajax({
             "url": "/parts/"+encodeURI(part.id),
@@ -357,7 +332,6 @@
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success":function(result){
-               // console.log(result);
                   
             },
             "error":function(xhr,status,error){
@@ -368,7 +342,6 @@
 
     function deletePartAjax(id){
         
-        //console.log(JSON.stringify('deleting '+id));
         $.ajax({
             "url": "/parts/"+encodeURI(id),
             "method":"DELETE",
@@ -376,7 +349,6 @@
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
             "success":function(result){
-                //console.log(result);
                   
             },
             "error":function(xhr,status,error){
@@ -402,6 +374,11 @@
             }
         });
     }
+    // Update UI with the retrieved data.
+    function updatePenaltyPointsTable(point) {
+    console.log(point);
+    }
+
     getAllAjax();
   
     

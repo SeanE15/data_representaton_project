@@ -35,7 +35,7 @@ To modify or run the program on a local machine requires the latest version of P
 
 [6] The run the server:
 
-    python server,py
+    python server.py
 
 [7] You can now navigate to your web browser of your choosing, typing into the address bar:
 
