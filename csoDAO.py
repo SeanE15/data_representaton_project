@@ -9,7 +9,9 @@ urlEnd = "/JSON-stat/2.0/en"
 def getAllAsFile(dataset):
     # Retrieve data from the CSO API for the given dataset and write it to a JSON file
     with open("cso.json", "wt") as fp:
-        print(json.dumps(getAll(dataset)), file=fp)
+        data = getAll(dataset)
+        # Encapsulate the data in square brackets to create a JSON array
+        json.dump([data], fp)
 
 def getAll(dataset):   
     # Retrieve data from the CSO API for the given dataset
@@ -21,7 +23,8 @@ def getFormattedAsFile(dataset):
     # Retrieve and format data from the CSO API for the given dataset and write it to a JSON file
     with open("cso-formatted.json", "wt") as fp:
         formatted_data = getFormatted(dataset)
-        print(json.dumps(formatted_data), file=fp)
+        # Encapsulate the formatted data in square brackets to create a JSON array
+        json.dump([formatted_data], fp)
         print("Debug: Data written to cso-formatted.json")
 
 def getFormatted(dataset):
@@ -70,7 +73,7 @@ def getFormatted(dataset):
                                 currentId = ids[5]
                                 index = dimensions[currentId]["category"]["index"][dim5]
                                 label5 = dimensions[currentId]["category"]["label"][index]
-                                print("\t\t\t",label5, " ", values[valuecount])
+                                print("\t\t\t", label5, " ", values[valuecount])
                                 result[label0][label1][label2][label3][label4][label5] = (values[valuecount])
 
                                 db_values = (label0, label1, label2, label3, label4, label5, (values[valuecount]))
@@ -81,5 +84,5 @@ def getFormatted(dataset):
     return result
     
 if __name__ == "__main__":
-    # Execute the script to retrieve and format data for a specific dataset
+    # Execute the script to retrieve and format data for a specific dataset 'PPA04'.
     getFormattedAsFile("PPA04")

@@ -27,19 +27,22 @@ class points_DAO:
             self.connection.close()
 
     def create(self, year, county, label, penalty_points):
-        # Create a new record in the 'points' table
+    # Create a new record in the 'points' table
         with self.getcursor() as cursor:
             try:
-                sql = "INSERT INTO points (Statistic Label, Year, County, Penalty Points Applied, UNIT, VALUE]) VALUES (%s, %s, %s, %s, %s, %s)"
+                # Fix the SQL query to properly handle column names with spaces
+                sql = "INSERT INTO points ('statistic_label', 'year', 'county', 'Penalty_Points_Applied', 'UNIT', 'value') VALUES (%s, %s, %s, %s, %s, %s)"
                 values = (year, county, label, json.dumps(penalty_points))
                 print("Debug: Values before execution:", values)
                 cursor.execute(sql, values)
                 self.connection.commit()
                 new_id = cursor.lastrowid
+                # Error handling
             except Exception as e:
                 print(f"Error in create: {e}")
                 new_id = None
         return new_id
+
 
     def getAll(self):
         # Retrieve all records from the 'points' table
@@ -54,7 +57,7 @@ class points_DAO:
 
     def convert_to_dictionary(self, result):
         # Convert a database result to a dictionary
-        col_names = ['Statistic Label', 'Year', 'County', 'Penalty Points Applied', 'UNIT', 'VALUE']
+        col_names = ['statistic_label', 'year', 'county', 'Penalty_Points_Applied', 'UNIT', 'value']
         return dict(zip(col_names, result)) if result else None
 
 # Instantiate the points_DAO class
