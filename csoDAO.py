@@ -52,27 +52,15 @@ def getFormatted(dataset):
                 currentId = ids[2]
                 index = dimensions[currentId]["category"]["index"][dim2]
                 label2 = dimensions[currentId]["category"]["label"][index]
-                result[label0][label1][label2] = {}
+                result[label0][label1][label2] = (values[valuecount])
 
-                for dim3 in range(0, sizes[3]):
-                    currentId = ids[3]
-                    index = dimensions[currentId]["category"]["index"][dim3]
-                    label3 = dimensions[currentId]["category"]["label"][index]
-                    result[label0][label1][label2][label3] = {}
+                db_values = (label0, label1, label2, (values[valuecount]))
+                pointsDAO.create(db_values)
 
-                    for dim4 in range(0, sizes[4] if len(sizes) > 4 else 0):
-                        currentId = ids[4]
-                        index = dimensions[currentId]["category"]["index"][dim4]
-                        label4 = dimensions[currentId]["category"]["label"][index]
-                        result[label0][label1][label2][label3][label4] = (values[valuecount])
+            valuecount += 1
 
-                        db_values = (label0, label1, label2, label3, label4, (values[valuecount]))
-                        pointsDAO.create(db_values)
-                        
-                    valuecount += 1
-        
     return result
     
 if __name__ == "__main__":
     # Execute the script to retrieve and format data for a specific dataset 'PPA04'.
-    getFormattedAsFile("PPA04")
+    getFormattedAsFile("PPA01")

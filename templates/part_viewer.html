@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <!-- Meta information and title -->
@@ -35,13 +36,13 @@
             }
     
             th {
-                background-color: #007bff;
+                background-color: #7e5d17;
                 color: #fff; 
             }
     
             button {
                 padding: 8px 16px;
-                background-color: #007bff;
+                background-color: #0099ff;
                 color: #fff;
                 border: none;
                 cursor: pointer;
@@ -49,8 +50,44 @@
             }
     
             button:hover {
-                background-color: #0056b3;
+                background-color: #9fad4f;
             }
+
+            .button-container {
+                display: flex;
+                justify-content: center;
+                padding: 20px;
+                box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); /* Adds a shadow effect */
+                }
+
+                .button-container .audi-button {
+                font-size: 1.5em;
+                padding: 10px 20px;
+                background-color: #aa0a0a; 
+                width: 200px;
+                }
+
+                .button-container .vw-button {
+                font-size: 1.5em;
+                padding: 10px 20px;
+                background-color: #0e00cc; 
+                width: 200px;
+                }
+
+                .button-container .bmw-button {
+                font-size: 1.5em;
+                padding: 10px 20px;
+                background-color: #150747; 
+                width: 200px;
+                }
+
+                .button-container .seat-button {
+                font-size: 1.5em;
+                padding: 10px 20px;
+                background-color: #665c00; 
+                width: 200px;
+                }
+
         </style>  
     </head>
     <body>
@@ -74,57 +111,90 @@
                     </div>
                 </div>
             </div>
-        <div>
-            <h1 class="text-center">Parts Catalogue</h1>
-            <h3 class="text-center">Help us create Ireland's most extensive parts catalogue!</h3>
-            <p class="text-center"> You can help us to become Ireland's first community driven parts catalogue by using your indepth knowledge of parts. Established in 2023 - Irish AutoBiz is a community driven project looking to create an extensive list of parts using OEM numbers and manufacturer pricing.
-                Help us reach our goal of 500 parts before 2024 and every contributer will be entered into a draw to win a fabulous prize!
-            </p>
-            <table class="table" position="center" id="partTable">
-                <tr>
+            <div>
+                <h1 class="text-center">Parts Catalogue</h1>
+                <h3 class="text-center">Help us create Ireland's most extensive parts catalogue!</h3>
+                <p class="text-center"> You can help us to become Ireland's first community-driven parts catalogue by using your in-depth knowledge of parts. Established in 2023 - Irish AutoBiz is a community-driven project looking to create an extensive list of parts using OEM numbers and manufacturer pricing. Help us reach our goal of 500 parts before 2024, and every contributor will be entered into a draw to win a fabulous prize!
+                </p>
+                <table class="table" style="width: 80%; margin: 0 auto;" id="partTable">
+                    <tr>
                         <th>id</th>
                         <th>Part Name</th>
-                        <th>
-                            Part Number
-                        </th>
+                        <th>Part Number</th>
                         <th>Price</th>
-                </tr>
-            </table>
-        </div>
+                    </tr>
+                </table>
+            </div>
 
-        <div> <button id="showCreateButton" onclick="showCreate()">Add a Part</button></div>
-        <div id='createUpdateForm' style="display: none">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <!-- Button to show the form for adding a part to the catalogue -->
+                <button id="showCreateButton" onclick="showCreate()">Add a Part to our catalogue!</button>
+            </div>
+            <div id='createUpdateForm' style="display: none; margin-top: 20px; text-align: center;">
                 <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Part</h2>
-                <input type="hidden" name="id"/>
-                Part Name <input type="text" name="Part_Name" /><br/>
-                Part Number <input type="text" name="Part_No"/> <br/>
-                Price <input type="number" name="Price"/> <br/>
-                <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
-                <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
+                <div style="display: inline-block; text-align: left;">
+                    <!-- Input fields for creating or updating a part -->
+                    <input type="hidden" name="id"/>
+                    Part Name <input type="text" name="Part_Name" style="margin-bottom: 10px;"/><br/>
+                    Part Number <input type="text" name="Part_No" style="margin-bottom: 10px;"/> <br/>
+                    Price <input type="number" name="Price" style="margin-bottom: 10px;"/> <br/>
+                </div>
+                <!-- Buttons for creating, updating, and deleting a part -->
+                <div class="row justify-content-center">
+                    <div class="col-md-2">
+                        <button id="doCreateButton" onclick="doCreate()" style="background-color: #831559; color: #fff;">Create</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="doUpdateButton" onclick="doUpdate()" style="background-color: #28a745; color: #fff;">Update</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="doDeleteButton" onclick="doDelete()" style="background-color: #dc3545; color: #fff;">Delete</button>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- Add brands to the page, each button sends the user to the official manufacturer website-->
+        <div class="button-container" style="margin-top: 20px;margin-bottom: 20px;">
+            <div class="col-md-2">
+                <!-- Button to visit Audi's official website -->
+                <a href="https://www.audi.ie/" target="_blank" class="btn btn-primary audi-button">Audi</a>
+            </div>
+            <div class="col-md-2">
+                <!-- Button to visit Volkswagen's official website -->
+                <a href="https://www.volkswagen.ie/" target="_blank" class="btn btn-primary vw-button">Volkswagen</a>
+            </div>
+            <div class="col-md-2">
+                <!-- Button to visit BMW's official website -->
+                <a href="https://www.bmw.ie/" target="_blank" class="btn btn-primary bmw-button">BMW</a>
+            </div>
+            <div class="col-md-2">
+                <!-- Button to visit Seat's official website -->
+                <a href="https://www.seat.ie/" target="_blank" class="btn btn-primary seat-button">Seat</a>
+            </div>
         </div>
-
-        <div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
             <h2 class="text-center">Penalty Point Counter</h2>
-            <p class="text-center"> With the recent clamp down on speeding/drink driving we have included on this website a link to data from the CSO website about Penalty Points which were issued between 2021 and 2022.
-                The information can be viewed on a county by county basis, and when selecting which county to view, dont forget to choose from the years 2021 or 2022!
-            </p>
-            <label for="countyInput">County:</label>
-            <input type="text" id="countyInput" name="countyInput">
+            <p class="text-center"> With the recent clamp down on speeding/drink driving we have included on this website a link to data from the CSO website about Penalty Points which were issued between 2021 and 2022. The information can be viewed by pressing the 'Search' button, don't forget to choose from the years 2021 or 2022! </p>
+            <!-- Input fields and button for searching penalty points by county and year -->
             <label for="yearInput">Year:</label>
             <input type="text" id="yearInput" name="yearInput">
             <button onclick="getPenaltyPoints()">Search</button>
         
+            <!-- Table to display penalty points based on the search criteria -->
             <table class="table" id="pointsTable">
                 <tr>
                     <th>Penalty Points List - County</th>
                 </tr>
             </table>
         </div>
+        
     </body>
 
     <script>
     // Functions for handling UI elements
     function showCreate(){
+        // Show the form for creating a new part and hide other elements
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('partTable').style.display="none"
         document.getElementById('createUpdateForm').style.display="block"
@@ -134,16 +204,17 @@
 
         document.getElementById('doCreateButton').style.display="block"
         document.getElementById('doUpdateButton').style.display="none"
-
     }
 
     function showViewAll(){
+        // Show the parts table and the button for adding a new part
         document.getElementById('showCreateButton').style.display="block"
         document.getElementById('partTable').style.display="block"
         document.getElementById('createUpdateForm').style.display="none"
     }
 
     function showUpdate(buttonElement){
+        // Show the form for updating a part and hide other elements
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('partTable').style.display="none"
         document.getElementById('createUpdateForm').style.display="block"
@@ -157,38 +228,39 @@
         // Clear the form before populating it
         clearForm();
 
+        // Extract part details from the selected row
         var rowElement = buttonElement.parentNode.parentNode
-        
         var part = getPartFromRow(rowElement)
         populateFormWithPart(part)
     }
 
     // CRUD Operations 
     function doCreate(){
+        // Create a new part based on the form input
         var form = document.getElementById('createUpdateForm')
-
         var part = {
             Part_Name: form.querySelector('input[name="Part_Name"]').value,
             Part_No: form.querySelector('input[name="Part_No"]').value,
             Price: form.querySelector('input[name="Price"]').value,
         };
-
+        // Call the AJAX function to create the part
         console.log(JSON.stringify(part))
         createPartAjax(part)
         
     }
 
     function doUpdate(){
+        // Update an existing part based on the form input
         var part = getPartFromForm();
         var rowElement = document.getElementById(part.id);
         updatePartAjax(part);
         setPartInRow(rowElement, part);
-       
         clearForm();
         showViewAll();
     }
 
     function doDelete(r){
+        // Delete a part based on the selected row
         var tableElement = document.getElementById('partTable');
         var rowElement = r.parentNode.parentNode;
         var index = rowElement.rowIndex;
@@ -351,13 +423,11 @@
         });
     }
 
-    function getPenaltyPointsByCountyAndYear(county, year) {
-        // Perform an AJAX request to retrieve penalty points by county and year
-        // Update the pointsTable with the results
+    function getPenaltyPoints() {
+    // Perform an AJAX request to retrieve penalty points
         $.ajax({
             "url": "/points/", 
             "method": "GET",
-            "data": { "county": county, "year": year },
             "dataType": "JSON",
             "success": function (result) {
                 // Update the pointsTable with the retrieved data
@@ -369,26 +439,13 @@
         });
     }
 
-    function getPenaltyPoints() {
-        var county = document.getElementById('countyInput').value;
-        var year = document.getElementById('yearInput').value;
-        getPenaltyPointsByCountyAndYear(county, year);
-    }
-
     // Update UI with the retrieved data.
     function updatePenaltyPointsTable(points) {
-            var tableElement = document.getElementById('pointsTable');
-            // Clear existing rows from the table
-            tableElement.innerHTML = '<tr><th>Penalty Points List - County</th></tr>';
+        var tableElement = document.getElementById('pointsTable');
+        // Clear existing rows from the table
+        tableElement.innerHTML = '<tr><th>Penalty Points List - County</th></tr>';
+    }
 
-            // Add a new row for each point in the retrieved data
-            for (var i = 0; i < points.length; i++) {
-                var rowElement = tableElement.insertRow(-1);
-                var cellElement = rowElement.insertCell(0);
-                cellElement.innerHTML = points[i]["Statistic Label"] + ": " + points[i]["VALUE"];
-            }
-        }
-    
 
     getAllAjax();
   

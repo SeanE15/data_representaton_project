@@ -69,6 +69,13 @@ To modify or run the program on a local machine requires the latest version of P
 
 ---- 
 
+**Reflections on the Project:**
+
+Overall I am happy with the project, I have created a Flask server that consumed a RESTful API and performs CRUD operations using Ajax. I attempted to include a second database table by reading in a JSON file from the CSO website (see code in csoDAO.py) however it doesnt work properly (as can be seen in cso-formatted.json). I will endeavour to get this running properly in time, but that will ahve to wait for another day. Overall I have enjoyed the project, it has certainly stretched my coding muscles.
+My program is hosted on PythonAnywhere.com along with both databases (both working and not working).
+
+---- 
+
 ## <div align="center">References</div>
 
 [1] https://jackmckew.dev/make-a-readme-documentation-with-jupyter-notebooks.html

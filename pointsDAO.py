@@ -1,6 +1,5 @@
 import mysql.connector
 import config as cfg
-import json
 
 class points_DAO:
     def __init__(self):
@@ -26,22 +25,20 @@ class points_DAO:
         if self.connection:
             self.connection.close()
 
-    def create(self, db_values):
-    # Create a new record in the 'points' table
+    def create(self, values):
+        # Create a new record in the 'points' table
         with self.getcursor() as cursor:
             try:
                 # Fix the SQL query to properly handle column names with spaces
-                sql = "INSERT INTO points (statistic_label, year, county, Penalty_Points_Applied, UNIT, value) VALUES (%s, %s, %s, %s, %s, %s)"
-                print("Debug: Values before execution:", db_values)
-                cursor.execute(sql, db_values)
+                sql = 'INSERT INTO points ("Male", "Female", "No_gender_recorded", "All_genders") VALUES (%s, %s, %s, %s)'
+                print("Debug: Values before execution:", values)
+                cursor.execute(sql, values)
                 self.connection.commit()
                 new_id = cursor.lastrowid
-                # Error handling
             except Exception as e:
                 print(f"Error in create: {e}")
                 new_id = None
         return new_id
-
 
     def getAll(self):
         # Retrieve all records from the 'points' table
@@ -56,7 +53,7 @@ class points_DAO:
 
     def convert_to_dictionary(self, result):
         # Convert a database result to a dictionary
-        col_names = ['statistic_label', 'year', 'county', 'Penalty_Points_Applied', 'UNIT', 'value']
+        col_names = ['Male', 'Female', 'No_gender_recorded', 'All_genders']
         return dict(zip(col_names, result)) if result else None
 
 # Instantiate the points_DAO class
