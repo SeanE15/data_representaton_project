@@ -32,6 +32,10 @@ class points_DAO:
                 # Fix the SQL query to properly handle column names with spaces
                 sql = 'INSERT INTO points ("Male", "Female", "No_gender_recorded", "All_genders") VALUES (%s, %s, %s, %s)'
                 print("Debug: Values before execution:", values)
+
+                # Convert the values to integers before insertion
+                db_values = tuple(int(value) for value in values)
+
                 cursor.execute(sql, values)
                 self.connection.commit()
                 new_id = cursor.lastrowid
@@ -42,14 +46,12 @@ class points_DAO:
 
     def getAll(self):
         # Retrieve all records from the 'points' table
-        try:
-            cursor = self.getcursor()
-            sql = "SELECT * FROM points"
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            return [self.convert_to_dictionary(result) for result in results]
-        finally:
-            cursor.close()
+        cursor = self.getcursor()
+        sql = "SELECT * FROM points"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+
 
     def convert_to_dictionary(self, result):
         # Convert a database result to a dictionary
