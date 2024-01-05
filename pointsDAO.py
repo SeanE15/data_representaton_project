@@ -34,7 +34,7 @@ class points_DAO:
                 print("Debug: Values before execution:", values)
 
                 # Convert the values to integers before insertion
-                db_values = tuple(int(value) for value in values)
+                values = tuple(int(value) for value in values)
 
                 cursor.execute(sql, values)
                 self.connection.commit()
@@ -55,7 +55,7 @@ class points_DAO:
 
     def convert_to_dictionary(self, result):
         # Convert a database result to a dictionary
-        col_names = ['Male', 'Female', 'No_gender_recorded', 'All_genders']
+        col_names = ["Male", "Female", "No_gender_recorded", "All_genders"]
         return dict(zip(col_names, result)) if result else None
 
 # Instantiate the points_DAO class

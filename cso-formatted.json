@@ -1,1 +1,16 @@
-{"Penalty point endorsement notices issued": {"2021": {"Male": 128690.0, "Female": 128690.0, "No gender recorded": 128690.0, "All genders": 128690.0}, "2022": {"Male": 64895.0, "Female": 64895.0, "No gender recorded": 64895.0, "All genders": 64895.0}}}
+{
+    "Penalty point endorsement notices issued": {
+        "2021": {
+            "Male": 128690.0,
+            "Female": 128690.0,
+            "No gender recorded": 128690.0,
+            "All genders": 128690.0
+        },
+        "2022": {
+            "Male": 64895.0,
+            "Female": 64895.0,
+            "No gender recorded": 64895.0,
+            "All genders": 64895.0
+        }
+    }
+}
